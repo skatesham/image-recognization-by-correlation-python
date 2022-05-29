@@ -1,12 +1,12 @@
 import unittest
 
-from src.rec_img_usecase import RecImgUseCase
+from src.recognizer import Recognizer
 
 
-class NumberRecognizerTestCase(unittest.TestCase):
+class RecognizerTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.recognizer = RecImgUseCase()
+        self.recognizer = Recognizer()
 
     def test_process_image_search_numbers(self):
         filename = 'img/all_numbers.png'

@@ -2,7 +2,7 @@ import numpy
 from PIL import Image
 
 
-class ImageReader:
+class PixelReader:
 
     def read(self, filename):
         img = Image.open(filename)

@@ -1,4 +1,4 @@
-class ImagePointer:
+class PixelPointer:
 
     def __init__(self, max_height, max_width, pattern_height, pattern_width) -> None:
         super().__init__()

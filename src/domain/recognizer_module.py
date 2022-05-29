@@ -1,13 +1,13 @@
 import numpy
 
-from src.domain.img_reader import ImageReader
+from src.domain.pixel_reader import PixelReader
 
 
 class RecognizerModule:
 
     def __init__(self) -> None:
         super().__init__()
-        self.image_reader = ImageReader()
+        self.image_reader = PixelReader()
         self.pixels = []
         self.correlation = []
         self.input_pattern = []

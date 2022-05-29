@@ -1,9 +1,9 @@
 from src.domain.recognizer_module import RecognizerModule
-from src.domain.img_reader import ImageReader
-from src.domain.pointer import ImagePointer
+from src.domain.pixel_reader import PixelReader
+from src.domain.pixel_pointer import PixelPointer
 
 
-class RecognizerProcessor:
+class RecognizerService:
 
     def __init__(self, success_marge=0.88) -> None:
         super().__init__()
@@ -12,7 +12,7 @@ class RecognizerProcessor:
         self.processor = RecognizerModule()
         self.number_patterns = range(10)
         self.processor.withImageFlat(f"../resources/img/numbers/{self.number_patterns[0]}.png")
-        self.reader = ImageReader()
+        self.reader = PixelReader()
         self.pattern_width = self.processor.pattern_width
         self.pattern_height = self.processor.pattern_height
         self.results = dict((pattern, []) for pattern in self.number_patterns)
@@ -25,7 +25,7 @@ class RecognizerProcessor:
         matriz, width, height = self.reader.read(filename)
         answer = str()
         # Extract and recognize all patterns numbers on image using a pointer class
-        pointer = ImagePointer(height, width, self.pattern_height, self.pattern_width)
+        pointer = PixelPointer(height, width, self.pattern_height, self.pattern_width)
         while pointer.end_pointer_y <= height:
             sample_result = self.__extract_and_process_sample(matriz, pointer)
             answer += sample_result

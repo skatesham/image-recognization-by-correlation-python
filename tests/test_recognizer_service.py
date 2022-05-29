@@ -1,12 +1,12 @@
 import unittest
 
-from src.domain.recognizer_service import RecognizerProcessor
+from src.domain.recognizer_service import RecognizerService
 
 
 class NumberRecognizerTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.recognizer = RecognizerProcessor()
+        self.recognizer = RecognizerService()
 
     def test_process_sample_search_8(self):
         number = "8"
@@ -14,7 +14,7 @@ class NumberRecognizerTestCase(unittest.TestCase):
         self.assertEqual(number, result)
 
     def test_process_image_search_numbers(self):
-        filename = '../img/all_numbers.png'
+        filename = 'img/all_numbers.png'
         result = self.recognizer.process_image(filename).getAnswer()
         self.assertEqual("987654321", result)
         expected_best_results = {

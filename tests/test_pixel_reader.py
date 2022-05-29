@@ -2,13 +2,13 @@ import unittest
 
 import numpy
 
-from src.domain.img_reader import ImageReader
+from src.domain.pixel_reader import PixelReader
 
 
 class ImageReaderTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.reader = ImageReader()
+        self.reader = PixelReader()
 
     def test_read_blank_image(self):
         read = self.reader.read("img/blank.png")

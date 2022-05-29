@@ -5,7 +5,7 @@ import numpy
 from src.domain.recognizer_module import RecognizerModule
 
 
-class SimpleCorrelationProcessorTestCase(unittest.TestCase):
+class RecognizerModuleSimpleTestCase(unittest.TestCase):
 
     def setUp(self):
         self.input_pixel_image = RecognizerModule()
