@@ -2,7 +2,7 @@ from src.domain.pixel_pointer import PixelPointer
 
 
 class Process:
-    def __init__(self, matriz, width, height, pattern_width, pattern_height, success_marge=0.88) -> None:
+    def __init__(self, matriz, width, height, pattern_width, pattern_height, pattern_paths_format, success_marge=0.88) -> None:
         super().__init__()
         # higher error found on correlation matriz was 0.87
         self.success_marge = success_marge  # 0.88 was lucky number, for first sample examples
@@ -10,6 +10,7 @@ class Process:
         self.width = width
         self.height = height
         self.number_patterns = range(10)
+        self.pattern_paths_format = pattern_paths_format
 
         self.pattern_width = pattern_width
         self.pattern_height = pattern_height

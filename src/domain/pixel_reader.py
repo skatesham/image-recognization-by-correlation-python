@@ -20,7 +20,7 @@ class PixelReader:
         read, width, height = self.read(filename)
         return [item for lines in read for item in lines]
 
-    def read_detailed(self, filename):
+    def read_with_size(self, filename):
         img = Image.open(filename)
         width, height = img.size
         image_array = numpy.asarray(img)

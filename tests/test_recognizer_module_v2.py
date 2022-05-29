@@ -2,6 +2,7 @@ import unittest
 
 import numpy
 
+from src.domain.pixel_reader import PixelReader
 from src.domain.recognizer_module import RecognizerModule
 
 
@@ -12,13 +13,16 @@ def buildFileName(number):
 class NumberCorrelationTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.input_pixel_image = RecognizerModule()
+        self.recognizer_module = RecognizerModule()
+        self.reader = PixelReader()
 
     def test_number_1_with_1(self):
-        self.input_pixel_image.withImageFlat("../resources/img/numbers/1.png")
-        self.input_pixel_image.correlateFlatImagePattern("../resources/img/numbers/1.png")
-        self.assertEqual([[1.0, 1.0], [1.0, 1.0]], self.input_pixel_image.getCorrelation())
-        self.assertEqual(1.0, self.input_pixel_image.getCorrelationResult())
+        filename = "../resources/img/numbers/1.png"
+        pixels, width, height = self.reader.read_with_size(filename)
+        self.recognizer_module.withPixels(pixels, width, height)
+        self.recognizer_module.recognize("../resources/img/numbers/1.png")
+        self.assertEqual([[1.0, 1.0], [1.0, 1.0]], self.recognizer_module.getCorrelation())
+        self.assertEqual(1.0, self.recognizer_module.getCorrelationResult())
 
     def test_all_numbers_correlation(self):
         results = []
@@ -43,9 +47,10 @@ class NumberCorrelationTestCase(unittest.TestCase):
     def correlate(self, pattern_number, input_number):
         pattern_file_name = buildFileName(pattern_number)
         input_file_name = buildFileName(input_number)
-        self.input_pixel_image.withImageFlat(pattern_file_name)
-        self.input_pixel_image.correlateFlatImagePattern(input_file_name)
-        return self.input_pixel_image.getCorrelationResult()
+        pixels, width, height = self.reader.read_with_size(pattern_file_name)
+        self.recognizer_module.withPixels(pixels, width, height)
+        self.recognizer_module.recognize(input_file_name)
+        return self.recognizer_module.getCorrelationResult()
 
 
 if __name__ == '__main__':

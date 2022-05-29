@@ -1,4 +1,5 @@
 import numpy
+from pip._internal.utils.deprecation import deprecated
 
 from src.domain.pixel_reader import PixelReader
 
@@ -7,21 +8,17 @@ class RecognizerModule:
 
     def __init__(self) -> None:
         super().__init__()
-        self.image_reader = PixelReader()
+        self.reader = PixelReader()
         self.pixels = []
         self.correlation = []
         self.input_pattern = []
         self.pattern_width = -1
         self.pattern_height = -1
 
-    def withImageFlat(self, filename):
-        flat_image, width, height = self.image_reader.read_detailed(filename)
+    def withPixels(self, pixels, width=0, height=0):
+        self.pixels = pixels
         self.pattern_width = width
         self.pattern_height = height
-        self.pixels = flat_image
-
-    def withPixels(self, pixels):
-        self.pixels = pixels
         return self
 
     def correlatePattern(self, pixels):
@@ -29,8 +26,8 @@ class RecognizerModule:
         self.correlation = numpy.corrcoef(self.pixels, pixels).tolist()
         return self
 
-    def correlateFlatImagePattern(self, filename):
-        flat_image, width, height = self.image_reader.read_detailed(filename)
+    def recognize(self, filename):
+        flat_image, width, height = self.reader.read_with_size(filename)
         self.correlatePattern(flat_image)
         return self
 

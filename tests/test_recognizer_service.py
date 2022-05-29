@@ -14,17 +14,20 @@ class NumberRecognizerTestCase(unittest.TestCase):
     def test_process_sample_search_8(self):
         number_pattern = "8"
         filename = f'../resources/img/numbers/{number_pattern}.png'
-        __, pattern_width, pattern_height = self.reader.read(f"../resources/img/numbers/0.png")
+        pattern_paths_format = '../resources/img/numbers/{}.png'
+        first_pattern = pattern_paths_format.format(0)
+        __, pattern_width, pattern_height = self.reader.read(first_pattern)
         matriz, width, height = self.reader.read(filename)
-        process = Process(matriz, width, height, pattern_width, pattern_height)
+        process = Process(matriz, width, height, pattern_width, pattern_height, pattern_paths_format)
         process_result = self.recognizer.process_image(process)
         self.assertEqual(number_pattern, process_result.full_answer)
 
     def test_process_image_search_numbers(self):
         filename = 'img/all_numbers.png'
-        __, pattern_width, pattern_height = self.reader.read(f"../resources/img/numbers/0.png")
+        pattern_paths_format = "../resources/img/numbers/{}.png"
+        __, pattern_width, pattern_height = self.reader.read(pattern_paths_format.format(0))
         matriz, width, height = self.reader.read(filename)
-        process = Process(matriz, width, height, pattern_width, pattern_height)
+        process = Process(matriz, width, height, pattern_width, pattern_height, pattern_paths_format)
         process_result = self.recognizer.process_image(process)
         self.assertEqual("987654321", process_result.full_answer)
         expected_best_results = {

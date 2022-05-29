@@ -42,7 +42,7 @@ class RecognizerService:
         best_result = -2
         best_pattern = ''
         for pattern in process.number_patterns:  # number_patterns  = range(10)
-            result = self.__recognize_pattern(pattern, sample)
+            result = self.__recognize_pattern(pattern, sample, process.pattern_paths_format)
             process.results[pattern].append(result)
             if result > best_result:
                 best_result = result
@@ -54,9 +54,10 @@ class RecognizerService:
 
         return str()
 
-    def __recognize_pattern(self, pattern_number, image_sample):
-        pattern_file_name = f"../resources/img/numbers/{ pattern_number }.png"
-        self.processor.withImageFlat(pattern_file_name)
+    def __recognize_pattern(self, pattern_number, image_sample, pattern_paths_format):
+        pattern_file_name = pattern_paths_format.format(pattern_number)
+        pixels, width, height = self.reader.read_with_size(pattern_file_name)
+        self.processor.withPixels(pixels, width, height)
         self.processor.correlatePattern(image_sample)
         return self.processor.getCorrelationResult()
 

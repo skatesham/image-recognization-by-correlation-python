@@ -2,6 +2,7 @@ import unittest
 
 import numpy
 
+from src.domain.pixel_reader import PixelReader
 from src.domain.recognizer_module import RecognizerModule
 
 
@@ -10,6 +11,7 @@ class RecognizerModuleSimpleTestCase(unittest.TestCase):
     def setUp(self):
         self.input_pixel_image = RecognizerModule()
         self.pixels = numpy.arange(1, 10).tolist()
+        self.reader = PixelReader()
 
     def test_input(self):
         self.input_pixel_image.withPixels(self.pixels)

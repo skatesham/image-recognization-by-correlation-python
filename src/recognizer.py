@@ -10,9 +10,9 @@ class Recognizer:
         self.recognizer = RecognizerService()
         self.reader = PixelReader()
 
-    def recognize_patterns_v1(self, filename):
+    def recognize_patterns_v1(self, filename, pattern_paths_format="../resources/img/numbers/{}.png"):
         # Read data from image target recognition
-        __, pattern_width, pattern_height = self.reader.read(f"../resources/img/numbers/0.png")
+        __, pattern_width, pattern_height = self.reader.read(pattern_paths_format.format(0))
         matriz, width, height = self.reader.read(filename)
-        process = Process(matriz, width, height, pattern_width, pattern_height)
+        process = Process(matriz, width, height, pattern_width, pattern_height, pattern_paths_format)
         return self.recognizer.process_image(process)
