@@ -2,7 +2,7 @@ import unittest
 
 import numpy
 
-from src.domain.correlation_processor import CorrelationProcessor
+from src.domain.recognizer_module import RecognizerModule
 
 
 def buildFileName(number):
@@ -12,7 +12,7 @@ def buildFileName(number):
 class NumberCorrelationTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.input_pixel_image = CorrelationProcessor()
+        self.input_pixel_image = RecognizerModule()
 
     def test_number_1_with_1(self):
         self.input_pixel_image.withImageFlat("../resources/img/numbers/1.png")

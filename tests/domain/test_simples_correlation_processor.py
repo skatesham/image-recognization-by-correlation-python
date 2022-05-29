@@ -2,13 +2,13 @@ import unittest
 
 import numpy
 
-from src.domain.correlation_processor import CorrelationProcessor
+from src.domain.recognizer_module import RecognizerModule
 
 
 class SimpleCorrelationProcessorTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.input_pixel_image = CorrelationProcessor()
+        self.input_pixel_image = RecognizerModule()
         self.pixels = numpy.arange(1, 10).tolist()
 
     def test_input(self):

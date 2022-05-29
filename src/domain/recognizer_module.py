@@ -3,7 +3,7 @@ import numpy
 from src.domain.img_reader import ImageReader
 
 
-class CorrelationProcessor:
+class RecognizerModule:
 
     def __init__(self) -> None:
         super().__init__()
