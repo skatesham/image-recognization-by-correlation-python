@@ -45,7 +45,7 @@ class NumberCorrelationTestCase(unittest.TestCase):
         input_file_name = buildFileName(input_number)
         self.input_pixel_image.withImageFlat(pattern_file_name)
         self.input_pixel_image.correlateFlatImagePattern(input_file_name)
-        return self.input_pixel_image.getCorrelationResult();
+        return self.input_pixel_image.getCorrelationResult()
 
 
 if __name__ == '__main__':
