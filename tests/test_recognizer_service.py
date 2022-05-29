@@ -1,22 +1,32 @@
 import unittest
 
+from src.domain.process import Process
 from src.domain.recognizer_service import RecognizerService
+from src.domain.pixel_reader import PixelReader
 
 
 class NumberRecognizerTestCase(unittest.TestCase):
 
     def setUp(self):
         self.recognizer = RecognizerService()
+        self.reader = PixelReader()
 
     def test_process_sample_search_8(self):
-        number = "8"
-        result = self.recognizer.process_image(f'../resources/img/numbers/{number}.png').getAnswer()
-        self.assertEqual(number, result)
+        number_pattern = "8"
+        filename = f'../resources/img/numbers/{number_pattern}.png'
+        __, pattern_width, pattern_height = self.reader.read(f"../resources/img/numbers/0.png")
+        matriz, width, height = self.reader.read(filename)
+        process = Process(matriz, width, height, pattern_width, pattern_height)
+        process_result = self.recognizer.process_image(process)
+        self.assertEqual(number_pattern, process_result.full_answer)
 
     def test_process_image_search_numbers(self):
         filename = 'img/all_numbers.png'
-        result = self.recognizer.process_image(filename).getAnswer()
-        self.assertEqual("987654321", result)
+        __, pattern_width, pattern_height = self.reader.read(f"../resources/img/numbers/0.png")
+        matriz, width, height = self.reader.read(filename)
+        process = Process(matriz, width, height, pattern_width, pattern_height)
+        process_result = self.recognizer.process_image(process)
+        self.assertEqual("987654321", process_result.full_answer)
         expected_best_results = {
             0: [],
             1: [1.0],
@@ -29,7 +39,7 @@ class NumberRecognizerTestCase(unittest.TestCase):
             8: [0.97],
             9: [1.0]
         }
-        self.assertEqual(expected_best_results, self.recognizer.getBestResult())
+        self.assertEqual(expected_best_results, process_result.getBestResult())
         expected_best_results = {
             0: [0.68, 0.7, 0.77, 0.83, 0.85],
             1: [0.34, 0.38, 0.4, 0.55, 1.0],
@@ -42,7 +52,7 @@ class NumberRecognizerTestCase(unittest.TestCase):
             8: [0.74, 0.78, 0.78, 0.87, 0.97],
             9: [0.73, 0.73, 0.76, 0.77, 1.0]
         }
-        self.assertEqual(expected_best_results, self.recognizer.getFilteredResults())
+        self.assertEqual(expected_best_results, process_result.getFilteredResults())
 
 
 if __name__ == '__main__':

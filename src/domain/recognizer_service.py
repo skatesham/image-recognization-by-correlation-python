@@ -1,85 +1,55 @@
-from src.domain.recognizer_module import RecognizerModule
 from src.domain.pixel_reader import PixelReader
-from src.domain.pixel_pointer import PixelPointer
+from src.domain.process import Process
+from src.domain.recognizer_module import RecognizerModule
 
 
 class RecognizerService:
 
-    def __init__(self, success_marge=0.88) -> None:
+    def __init__(self) -> None:
         super().__init__()
-        # higher error found on correlation matriz was 0.87
-        self.success_marge = success_marge  # 0.88 was lucky number, for first sample examples
         self.processor = RecognizerModule()
-        self.number_patterns = range(10)
-        self.processor.withImageFlat(f"../resources/img/numbers/{self.number_patterns[0]}.png")
         self.reader = PixelReader()
-        self.pattern_width = self.processor.pattern_width
-        self.pattern_height = self.processor.pattern_height
-        self.results = dict((pattern, []) for pattern in self.number_patterns)
-        self.filtered_results = dict((pattern, []) for pattern in self.number_patterns)
-        self.best_results = dict((pattern, []) for pattern in self.number_patterns)
-        self.full_answer = str()
 
-    def process_image(self, filename):
-        # Read data from image target recognition
-        matriz, width, height = self.reader.read(filename)
+    def process_image(self, process):
         answer = str()
         # Extract and recognize all patterns numbers on image using a pointer class
-        pointer = PixelPointer(height, width, self.pattern_height, self.pattern_width)
-        while pointer.end_pointer_y <= height:
-            sample_result = self.__extract_and_process_sample(matriz, pointer)
+        while process.pointer.end_pointer_y <= process.height:
+            sample_result = self.__extract_and_process_sample(process)
             answer += sample_result
-        self.full_answer = answer
-        return self
+        process.full_answer = answer
+        return process
 
-    def getResults(self):
-        return self.results
-
-    def getFilteredResults(self, size_best_results=5):
-
-        for pattern in self.number_patterns:
-            self.results[pattern].sort()
-            self.filtered_results[pattern] = self.results[pattern][-size_best_results:]
-
-        return self.filtered_results
-
-    def getBestResult(self):
-        return self.best_results
-
-    def getAnswer(self):
-        return self.full_answer
-
-    def __extract_and_process_sample(self, matriz, pointer):
+    def __extract_and_process_sample(self, process):
         sample = []
-        y = pointer.init_pointer_y
-        while y < pointer.end_pointer_y:
-            x = pointer.init_pointer_x
-            while x < pointer.end_pointer_x:
-                sample.append(matriz[y][x])
+        y = process.pointer.init_pointer_y
+        while y < process.pointer.end_pointer_y:
+            x = process.pointer.init_pointer_x
+            while x < process.pointer.end_pointer_x:
+                sample.append(process.matriz[y][x])
                 x += 1
             y += 1
-        answer = self.__process_all_numbers_on_sample(sample)
+        answer = self.__process_all_numbers_on_sample(sample, process)
         if answer != str():
             # Found pattern on sample
-            pointer.init_on_next_pattern()
+            process.pointer.init_on_next_pattern()
             return answer
         else:
             # Not found pattern on sample
-            pointer.init_on_next_pixel()
+            process.pointer.init_on_next_pixel()
             return str()
 
-    def __process_all_numbers_on_sample(self, sample):
+    def __process_all_numbers_on_sample(self, sample, process):
         best_result = -2
         best_pattern = ''
-        for pattern in self.number_patterns:  # number_patterns  = range(10)
+        for pattern in process.number_patterns:  # number_patterns  = range(10)
             result = self.__recognize_pattern(pattern, sample)
-            self.results[pattern].append(result)
+            process.results[pattern].append(result)
             if result > best_result:
                 best_result = result
                 best_pattern = pattern
 
-        if self.__check_recognition(best_result):
-            self.best_results[best_pattern].append(best_result)
+        if self.__check_recognition(best_result, process.success_marge):
+            process.best_results[best_pattern].append(best_result)
             return str(best_pattern)
 
         return str()
@@ -90,5 +60,5 @@ class RecognizerService:
         self.processor.correlatePattern(image_sample)
         return self.processor.getCorrelationResult()
 
-    def __check_recognition(self, result):
-        return result > self.success_marge
+    def __check_recognition(self, result, success_marge):
+        return result > success_marge
