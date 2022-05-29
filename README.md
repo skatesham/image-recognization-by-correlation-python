@@ -27,7 +27,7 @@ With the example patterns:
 > The result should be the string with the number on the image.
 
 #### Correlation Matriz of the patterns
-![alt-text](https://github.com/skatesham/image-recognization-by-correlation-python/blob/main/resources/matriz_correlation.png?raw=true)
+![alt-text](https://github.com/skatesham/image-recognization-by-correlation-python/blob/main/resources/matriz_correlation-1.png?raw=true)
 
 ## Conclusion
 Success, was possible recognize.
