@@ -1,7 +1,7 @@
 import unittest
 
 import numpy
-from src.image_reader import ImageReader
+from src.domain.img_reader import ImageReader
 
 
 class ImageReaderTestCase(unittest.TestCase):

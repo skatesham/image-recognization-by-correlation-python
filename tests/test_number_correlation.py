@@ -2,7 +2,7 @@ import unittest
 
 import numpy
 
-from src.correlation_processor import CorrelationProcessor
+from src.domain.correlation_processor import CorrelationProcessor
 
 
 def buildFileName(number):
