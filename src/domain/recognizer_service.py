@@ -31,14 +31,8 @@ class RecognizerService:
             delta_y += 1
         # Representation Stage
         answer = self.__representation_stage(sample, process)
-        if answer != str():
-            # Found pattern on target_sample
-            process.pointer.init_on_next_pattern()
-            return answer
-        else:
-            # Not found pattern on target_sample
-            process.pointer.init_on_next_pixel()
-            return str()
+        process.pointer.next(answer)
+        return answer
 
     def __representation_stage(self, target_sample, process):
         best_result = -2
@@ -63,3 +57,4 @@ class RecognizerService:
 
     def __classify_pattern(self, result, success_marge):
         return result > success_marge
+
