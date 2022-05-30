@@ -40,8 +40,8 @@ class ConfusionMatrizTestCase(unittest.TestCase):
     def correlate(self, pattern_number, input_number):
         pattern_file_name = buildFileName(pattern_number)
         input_file_name = buildFileName(input_number)
-        pattern_pixels, width, height = self.reader.read_flat_with_size(pattern_file_name)
-        target_pixels, width, height = self.reader.read_flat_with_size(input_file_name)
+        pattern_pixels, width, height = self.reader.read_as_list(pattern_file_name)
+        target_pixels, width, height = self.reader.read_as_list(input_file_name)
         return self.recognizer_module.represent(pattern_pixels, target_pixels)
 
 

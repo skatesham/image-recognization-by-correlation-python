@@ -14,20 +14,20 @@ class RecognizerModuleTestCase(unittest.TestCase):
         self.reader = PixelReader()
 
     def test_image_correlation_half(self):
-        pattern_pixels, __, __ = self.reader.read_flat_with_size("img/blank.png")
-        target_pixels, __, __ = self.reader.read_flat_with_size("img/half.png")
+        pattern_pixels, __, __ = self.reader.read_as_list("img/blank.png")
+        target_pixels, __, __ = self.reader.read_as_list("img/half.png")
         result = self.recognizer_module.represent(pattern_pixels, target_pixels)
         numpy.testing.assert_equal(float('NAN'), result)
 
     def test_image_inverted_correlation(self):
-        pattern_pixels, __, __ = self.reader.read_flat_with_size("img/chess.png")
-        target_pixels, __, __ = self.reader.read_flat_with_size("img/chess-inverse.png")
+        pattern_pixels, __, __ = self.reader.read_as_list("img/chess.png")
+        target_pixels, __, __ = self.reader.read_as_list("img/chess-inverse.png")
         result = self.recognizer_module.represent(pattern_pixels, target_pixels)
         numpy.testing.assert_equal(-1.0, result)
 
     def test_inversion_inline_image_correlation(self):
-        pattern_pixels, __, __ = self.reader.read_flat_with_size("img/chess-inline.png")
-        target_pixels, __, __ = self.reader.read_flat_with_size("img/chess-inline-inverse.png")
+        pattern_pixels, __, __ = self.reader.read_as_list("img/chess-inline.png")
+        target_pixels, __, __ = self.reader.read_as_list("img/chess-inline-inverse.png")
         result = self.recognizer_module.represent(pattern_pixels, target_pixels)
         numpy.testing.assert_equal(-1.0, result)
 

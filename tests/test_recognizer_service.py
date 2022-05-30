@@ -1,9 +1,9 @@
 import unittest
 
 from src.domain.pattern import Pattern
+from src.domain.pixel_reader import PixelReader
 from src.domain.process import Process
 from src.domain.recognizer_service import RecognizerService
-from src.domain.pixel_reader import PixelReader
 
 
 class NumberRecognizerTestCase(unittest.TestCase):
@@ -15,7 +15,7 @@ class NumberRecognizerTestCase(unittest.TestCase):
     def test_process_sample_search_8(self):
         number_pattern = "8"
         filename = f'../resources/img/numbers/{number_pattern}.png'
-        matriz, width, height = self.reader.read(filename)
+        matriz, width, height = self.reader.read_as_matriz(filename)
         patterns = self.acquisition()
         process = Process(matriz, width, height, patterns)
         process_result = self.recognizer.process_image(process)
@@ -23,7 +23,7 @@ class NumberRecognizerTestCase(unittest.TestCase):
 
     def test_process_image_search_numbers(self):
         filename = 'img/all_numbers.png'
-        matriz, width, height = self.reader.read(filename)
+        matriz, width, height = self.reader.read_as_matriz(filename)
         patterns = self.acquisition()
         process = Process(matriz, width, height, patterns)
         process_result = self.recognizer.process_image(process)
@@ -58,10 +58,11 @@ class NumberRecognizerTestCase(unittest.TestCase):
     def acquisition(self, patterns_filename="../resources/img/numbers/{}.png"):
         patterns = list()
         for name in range(10):
-            pixels, width, height = self.reader.read_flat_with_size(patterns_filename.format(name))
+            pixels, width, height = self.reader.read_as_list(patterns_filename.format(name))
             pattern = Pattern(name, pixels, height, width)
             patterns.append(pattern)
         return patterns
+
 
 if __name__ == '__main__':
     unittest.main()

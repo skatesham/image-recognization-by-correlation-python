@@ -6,21 +6,21 @@ class RecognizerService:
 
     def __init__(self) -> None:
         super().__init__()
-        self.processor = RecognizerModule()
+        self.reconizer_module = RecognizerModule()
         self.reader = PixelReader()
 
     def process_image(self, process):
-        process.answer = self.__segmentation_stage(process)
+        ''' Process the following stages of image processing
+        Segmentation / Representation / Classification '''
+        # Segmentation Stage
+        while process.pointer.end_pointer_y <= process.height:
+            sample_result = self.__segmentation_stage_unitary(process)
+            process.answer += sample_result
         return process
 
-    def __segmentation_stage(self, process):
-        answer = ''
-        while process.pointer.end_pointer_y <= process.height:
-            sample_result = self.__segment_sample(process)
-            answer += sample_result
-        return answer
-
-    def __segment_sample(self, process):
+    def __segmentation_stage_unitary(self, process):
+        ''' Extract segments (samples) of the target_image
+        based on the pattern image '''
         sample = []
         delta_y = process.pointer.init_pointer_y
         while delta_y < process.pointer.end_pointer_y:
@@ -35,10 +35,11 @@ class RecognizerService:
         return answer
 
     def __representation_stage(self, target_sample, process):
+        ''' Stage of process all patterns with the segment (sample) '''
         best_result = -2
         best_pattern = ''
         for pattern in process.patterns:
-            result = self.__represent_pattern(pattern.pixels, target_sample)
+            result = self.reconizer_module.represent(pattern.pixels, target_sample)
             pattern.results.append(result)
             if result > best_result:
                 best_result = result
@@ -51,10 +52,7 @@ class RecognizerService:
 
         return str()
 
-    def __represent_pattern(self, pattern, target_sample):
-        result = self.processor.represent(pattern, target_sample)
-        return float("{:.2f}".format(result))
-
     def __classify_pattern(self, result, success_marge):
+        ''' Stage of filter the positive results '''
         return result > success_marge
 
