@@ -18,7 +18,7 @@ class NumberCorrelationTestCase(unittest.TestCase):
 
     def test_number_1_with_1(self):
         filename = "../resources/img/numbers/1.png"
-        pixels, width, height = self.reader.read_with_size(filename)
+        pixels, width, height = self.reader.read_flat_with_size(filename)
         self.recognizer_module.withPixels(pixels, width, height)
         self.recognizer_module.recognize("../resources/img/numbers/1.png")
         self.assertEqual([[1.0, 1.0], [1.0, 1.0]], self.recognizer_module.getCorrelation())
@@ -47,7 +47,7 @@ class NumberCorrelationTestCase(unittest.TestCase):
     def correlate(self, pattern_number, input_number):
         pattern_file_name = buildFileName(pattern_number)
         input_file_name = buildFileName(input_number)
-        pixels, width, height = self.reader.read_with_size(pattern_file_name)
+        pixels, width, height = self.reader.read_flat_with_size(pattern_file_name)
         self.recognizer_module.withPixels(pixels, width, height)
         self.recognizer_module.recognize(input_file_name)
         return self.recognizer_module.getCorrelationResult()

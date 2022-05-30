@@ -15,7 +15,7 @@ class CorrelationProcessorTestCase(unittest.TestCase):
 
     def test_input_image(self):
         filename = "img/blank.png"
-        pixels, width, height = self.reader.read_with_size(filename)
+        pixels, width, height = self.reader.read_flat_with_size(filename)
         self.recognizer_module.withPixels(pixels, width, height)
         pixels = self.recognizer_module.getPixels()
         expected = [255, 255, 255, 255, 255,
@@ -27,7 +27,7 @@ class CorrelationProcessorTestCase(unittest.TestCase):
 
     def test_image_correlation_half(self):
         filename = "img/blank.png"
-        pixels, width, height = self.reader.read_with_size(filename)
+        pixels, width, height = self.reader.read_flat_with_size(filename)
         self.recognizer_module.withPixels(pixels, width, height)
         self.recognizer_module.recognize("img/half.png")
         none_correlation = [[float('NAN'), float('NAN')], [float('NAN'), 1.0]]
@@ -36,7 +36,7 @@ class CorrelationProcessorTestCase(unittest.TestCase):
 
     def test_image_inverted_correlation(self):
         filename = "img/chess.png"
-        pixels, width, height = self.reader.read_with_size(filename)
+        pixels, width, height = self.reader.read_flat_with_size(filename)
         self.recognizer_module.withPixels(pixels, width, height)
         self.recognizer_module.recognize("img/chess-inverse.png")
         self.assertEqual([[1.0, -1.0], [-1.0, 1.0]], self.recognizer_module.getCorrelation())
@@ -44,7 +44,7 @@ class CorrelationProcessorTestCase(unittest.TestCase):
 
     def test_inversion_inline_image_correlation(self):
         filename = "img/chess-inline.png"
-        pixels, width, height = self.reader.read_with_size(filename)
+        pixels, width, height = self.reader.read_flat_with_size(filename)
         self.recognizer_module.withPixels(pixels, width, height)
         self.recognizer_module.recognize("img/chess-inline-inverse.png")
         self.assertEqual([[1.0, -1.0], [-1.0, 1.0]], self.recognizer_module.getCorrelation())

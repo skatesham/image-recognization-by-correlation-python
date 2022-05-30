@@ -1,5 +1,4 @@
 from src.domain.pixel_reader import PixelReader
-from src.domain.process import Process
 from src.domain.recognizer_module import RecognizerModule
 
 
@@ -11,55 +10,56 @@ class RecognizerService:
         self.reader = PixelReader()
 
     def process_image(self, process):
-        answer = str()
-        # Extract and recognize all patterns numbers on image using a pointer class
-        while process.pointer.end_pointer_y <= process.height:
-            sample_result = self.__extract_and_process_sample(process)
-            answer += sample_result
-        process.full_answer = answer
+        process.answer = self.__segmentation_stage(process)
         return process
 
-    def __extract_and_process_sample(self, process):
+    def __segmentation_stage(self, process):
+        answer = ''
+        while process.pointer.end_pointer_y <= process.height:
+            sample_result = self.__segment_sample(process)
+            answer += sample_result
+        return answer
+
+    def __segment_sample(self, process):
         sample = []
-        y = process.pointer.init_pointer_y
-        while y < process.pointer.end_pointer_y:
-            x = process.pointer.init_pointer_x
-            while x < process.pointer.end_pointer_x:
-                sample.append(process.matriz[y][x])
-                x += 1
-            y += 1
-        answer = self.__process_all_numbers_on_sample(sample, process)
+        delta_y = process.pointer.init_pointer_y
+        while delta_y < process.pointer.end_pointer_y:
+            delta_x = process.pointer.init_pointer_x
+            while delta_x < process.pointer.end_pointer_x:
+                sample.append(process.pixels[delta_y][delta_x])
+                delta_x += 1
+            delta_y += 1
+        # Representation Stage
+        answer = self.__representation_stage(sample, process)
         if answer != str():
-            # Found pattern on sample
+            # Found pattern on target_sample
             process.pointer.init_on_next_pattern()
             return answer
         else:
-            # Not found pattern on sample
+            # Not found pattern on target_sample
             process.pointer.init_on_next_pixel()
             return str()
 
-    def __process_all_numbers_on_sample(self, sample, process):
+    def __representation_stage(self, target_sample, process):
         best_result = -2
         best_pattern = ''
-        for pattern in process.number_patterns:  # number_patterns  = range(10)
-            result = self.__recognize_pattern(pattern, sample, process.pattern_paths_format)
-            process.results[pattern].append(result)
+        for pattern in process.patterns:
+            result = self.__represent_pattern(pattern.pixels, target_sample)
+            pattern.results.append(result)
             if result > best_result:
                 best_result = result
                 best_pattern = pattern
 
-        if self.__check_recognition(best_result, process.success_marge):
-            process.best_results[best_pattern].append(best_result)
-            return str(best_pattern)
+        # Classification Stage
+        if self.__classify_pattern(best_result, best_pattern.success_marge):
+            best_pattern.best_result = best_result
+            return str(best_pattern.name)
 
         return str()
 
-    def __recognize_pattern(self, pattern_number, image_sample, pattern_paths_format):
-        pattern_file_name = pattern_paths_format.format(pattern_number)
-        pixels, width, height = self.reader.read_with_size(pattern_file_name)
-        self.processor.withPixels(pixels, width, height)
-        self.processor.correlatePattern(image_sample)
-        return self.processor.getCorrelationResult()
+    def __represent_pattern(self, pattern, target_sample):
+        result = self.processor.represent(pattern, target_sample)
+        return float("{:.2f}".format(result))
 
-    def __check_recognition(self, result, success_marge):
+    def __classify_pattern(self, result, success_marge):
         return result > success_marge

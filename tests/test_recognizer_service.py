@@ -1,5 +1,6 @@
 import unittest
 
+from src.domain.pattern import Pattern
 from src.domain.process import Process
 from src.domain.recognizer_service import RecognizerService
 from src.domain.pixel_reader import PixelReader
@@ -14,35 +15,32 @@ class NumberRecognizerTestCase(unittest.TestCase):
     def test_process_sample_search_8(self):
         number_pattern = "8"
         filename = f'../resources/img/numbers/{number_pattern}.png'
-        pattern_paths_format = '../resources/img/numbers/{}.png'
-        first_pattern = pattern_paths_format.format(0)
-        __, pattern_width, pattern_height = self.reader.read(first_pattern)
         matriz, width, height = self.reader.read(filename)
-        process = Process(matriz, width, height, pattern_width, pattern_height, pattern_paths_format)
+        patterns = self.acquisition()
+        process = Process(matriz, width, height, patterns)
         process_result = self.recognizer.process_image(process)
-        self.assertEqual(number_pattern, process_result.full_answer)
+        self.assertEqual(number_pattern, process_result.answer)
 
     def test_process_image_search_numbers(self):
         filename = 'img/all_numbers.png'
-        pattern_paths_format = "../resources/img/numbers/{}.png"
-        __, pattern_width, pattern_height = self.reader.read(pattern_paths_format.format(0))
         matriz, width, height = self.reader.read(filename)
-        process = Process(matriz, width, height, pattern_width, pattern_height, pattern_paths_format)
+        patterns = self.acquisition()
+        process = Process(matriz, width, height, patterns)
         process_result = self.recognizer.process_image(process)
-        self.assertEqual("987654321", process_result.full_answer)
+        self.assertEqual("987654321", process_result.answer)
         expected_best_results = {
-            0: [],
-            1: [1.0],
-            2: [0.98],
-            3: [0.89],
-            4: [0.97],
-            5: [1.0],
-            6: [0.97],
-            7: [0.91],
-            8: [0.97],
-            9: [1.0]
+            0: '',
+            1: 1.0,
+            2: 0.98,
+            3: 0.89,
+            4: 0.97,
+            5: 1.0,
+            6: 0.97,
+            7: 0.91,
+            8: 0.97,
+            9: 1.0
         }
-        self.assertEqual(expected_best_results, process_result.getBestResult())
+        self.assertEqual(expected_best_results, process_result.get_best_results())
         expected_best_results = {
             0: [0.68, 0.7, 0.77, 0.83, 0.85],
             1: [0.34, 0.38, 0.4, 0.55, 1.0],
@@ -55,8 +53,15 @@ class NumberRecognizerTestCase(unittest.TestCase):
             8: [0.74, 0.78, 0.78, 0.87, 0.97],
             9: [0.73, 0.73, 0.76, 0.77, 1.0]
         }
-        self.assertEqual(expected_best_results, process_result.getFilteredResults())
+        self.assertEqual(expected_best_results, process_result.get_filtered_results())
 
+    def acquisition(self, patterns_filename="../resources/img/numbers/{}.png"):
+        patterns = list()
+        for name in range(10):
+            pixels, width, height = self.reader.read_flat_with_size(patterns_filename.format(name))
+            pattern = Pattern(name, pixels, height, width)
+            patterns.append(pattern)
+        return patterns
 
 if __name__ == '__main__':
     unittest.main()

@@ -21,13 +21,18 @@ class RecognizerModule:
         self.pattern_height = height
         return self
 
+    def represent(self, pattern_pixels, target_pixels):
+        result = numpy.corrcoef(target_pixels, pattern_pixels).tolist()
+        correlation_x_with_y = result[0][1]
+        return float("{:.2f}".format(correlation_x_with_y))
+
     def correlatePattern(self, pixels):
         self.input_pattern = pixels
         self.correlation = numpy.corrcoef(self.pixels, pixels).tolist()
         return self
 
     def recognize(self, filename):
-        flat_image, width, height = self.reader.read_with_size(filename)
+        flat_image, width, height = self.reader.read_flat_with_size(filename)
         self.correlatePattern(flat_image)
         return self
 
