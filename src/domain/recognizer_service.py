@@ -6,7 +6,7 @@ class RecognizerService:
 
     def __init__(self) -> None:
         super().__init__()
-        self.reconizer_module = RecognizerModule()
+        self.recognizer_module = RecognizerModule()
         self.reader = PixelReader()
 
     def process_image(self, process):
@@ -39,7 +39,7 @@ class RecognizerService:
         best_result = -2
         best_pattern = ''
         for pattern in process.patterns:
-            result = self.reconizer_module.represent(pattern.pixels, target_sample)
+            result = self.recognizer_module.represent(pattern.pixels, target_sample)
             pattern.results.append(result)
             if result > best_result:
                 best_result = result
@@ -48,6 +48,8 @@ class RecognizerService:
         # Classification Stage
         if self.__classify_pattern(best_result, best_pattern.success_marge):
             best_pattern.best_result = best_result
+            best_pattern.delta_y = process.pointer.init_pointer_y
+            best_pattern.delta_x = process.pointer.init_pointer_x
             return str(best_pattern.name)
 
         return str()

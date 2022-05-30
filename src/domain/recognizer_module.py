@@ -1,5 +1,7 @@
 import numpy
 
+FORMAT_RESULT = "{:.2f}"
+
 
 class RecognizerModule:
 
@@ -8,5 +10,4 @@ class RecognizerModule:
         result = numpy.corrcoef(target_pixels, pattern_pixels).tolist()
         # Using just single result of correlation
         correlation_x_with_y = result[0][1]
-        return float("{:.2f}".format(correlation_x_with_y))
-
+        return float(FORMAT_RESULT.format(correlation_x_with_y))
