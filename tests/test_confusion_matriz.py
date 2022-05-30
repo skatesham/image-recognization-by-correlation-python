@@ -10,19 +10,11 @@ def buildFileName(number):
     return f'../resources/img/numbers/{number}.png'
 
 
-class NumberCorrelationTestCase(unittest.TestCase):
+class ConfusionMatrizTestCase(unittest.TestCase):
 
     def setUp(self):
         self.recognizer_module = RecognizerModule()
         self.reader = PixelReader()
-
-    def test_number_1_with_1(self):
-        filename = "../resources/img/numbers/1.png"
-        pixels, width, height = self.reader.read_flat_with_size(filename)
-        self.recognizer_module.withPixels(pixels, width, height)
-        self.recognizer_module.recognize("../resources/img/numbers/1.png")
-        self.assertEqual([[1.0, 1.0], [1.0, 1.0]], self.recognizer_module.getCorrelation())
-        self.assertEqual(1.0, self.recognizer_module.getCorrelationResult())
 
     def test_all_numbers_correlation(self):
         results = []
@@ -32,6 +24,7 @@ class NumberCorrelationTestCase(unittest.TestCase):
                 result = self.correlate(y, x)
                 result_x.append(result)
             results.append(result_x)
+        # Debug on this variable for get confusion matriz
         numpy_array = numpy.array(results)
         self.assertEqual([[1.0, 0.14, 0.55, 0.69, 0.48, 0.7, 0.85, 0.28, 0.78, 0.85],
                           [0.14, 1.0, 0.33, 0.31, 0.32, 0.28, 0.19, 0.4, 0.22, 0.17],
@@ -47,10 +40,9 @@ class NumberCorrelationTestCase(unittest.TestCase):
     def correlate(self, pattern_number, input_number):
         pattern_file_name = buildFileName(pattern_number)
         input_file_name = buildFileName(input_number)
-        pixels, width, height = self.reader.read_flat_with_size(pattern_file_name)
-        self.recognizer_module.withPixels(pixels, width, height)
-        self.recognizer_module.recognize(input_file_name)
-        return self.recognizer_module.getCorrelationResult()
+        pattern_pixels, width, height = self.reader.read_flat_with_size(pattern_file_name)
+        target_pixels, width, height = self.reader.read_flat_with_size(input_file_name)
+        return self.recognizer_module.represent(pattern_pixels, target_pixels)
 
 
 if __name__ == '__main__':
