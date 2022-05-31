@@ -25,7 +25,7 @@ class NumberRecognizerTestCase(unittest.TestCase):
         matriz, width, height = self.reader.read_as_matriz(filename)
         patterns = self.build_patterns()
         target_image = Pattern(filename, matriz, height, width)
-        result, __ = self.recognizer.process_image(target_image, patterns)
+        result = self.recognizer.process_image(target_image, patterns)
         self.assertEqual("987654321", result)
 
     def build_patterns(self, patterns_filename="../resources/img/numbers/{}.png"):

@@ -20,10 +20,10 @@ class RecognizerService:
         while pointer.end_pointer_y <= target_image.height:
             sample_result = self.__segmentation_stage_unitary(target_image, patterns, pointer)
             answer += sample_result
-        return answer, patterns
+        return answer
 
     def __segmentation_stage_unitary(self, target_image, patterns, pointer):
-        ''' Extract segments (samples) of the target_image
+        ''' Extract segments (samples) of the target_image_pattern
         based on the pattern image '''
         sample = []
         delta_y = pointer.init_pointer_y

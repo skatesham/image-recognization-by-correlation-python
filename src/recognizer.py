@@ -11,13 +11,15 @@ class Recognizer:
         self.recognizer = RecognizerService()
         self.reader = PixelReader()
 
-    def recognize_patterns(self, target_filename, patterns_filename="../resources/img/numbers/{}.png"):
+    def recognize(self, target_filename, patterns_filename="../resources/img/numbers/{}.png"):
         # Data acquisition Stage
         target_image = PatternBuilder.build_target(target_filename)
-        patterns = list()
-        for name in range(10):
-            pattern = PatternBuilder.build_pattern(name, patterns_filename)
-            patterns.append(pattern)
-        # Throw stages of Segmentation / Representation / Classification
-        return self.recognizer.process_image(target_image, patterns)
+        patterns = [PatternBuilder.build_pattern(number_name, patterns_filename) for number_name in range(10)]
+        answer = self.recognize_patterns(target_image, patterns)
+        return answer, patterns
+
+    def recognize_patterns(self, target_image_pattern, patterns):
+        """ Stages of Segmentation / Representation / Classification """
+        answer = self.recognizer.process_image(target_image_pattern, patterns)
+        return answer
 

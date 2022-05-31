@@ -14,18 +14,18 @@ class PixelPointer:
     def next(self, answer):
         if answer != '':
             # Found pattern on target_sample
-            self.init_on_next_pattern()
+            self.__init_on_next_pattern()
 
         else:
             # Not found pattern on target_sample
-            self.init_on_next_pixel()
+            self.__init_on_next_pixel()
         self.__update_y_when_needed()
 
-    def init_on_next_pattern(self):
+    def __init_on_next_pattern(self):
         self.init_pointer_x += int(self.pattern_width * 0.3)
         self.end_pointer_x = self.init_pointer_x + self.pattern_width
 
-    def init_on_next_pixel(self):
+    def __init_on_next_pixel(self):
         self.init_pointer_x += 1
         self.end_pointer_x = self.init_pointer_x + self.pattern_width
 

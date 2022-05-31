@@ -10,7 +10,7 @@ class RecognizerTestCase(unittest.TestCase):
 
     def test_process_image_search_numbers(self):
         filename = 'img/all_numbers.png'
-        result, patterns = self.recognizer.recognize_patterns(filename)
+        result, patterns = self.recognizer.recognize(filename)
         self.assertEqual("987654321", result)
 
 
