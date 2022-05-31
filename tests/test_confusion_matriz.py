@@ -3,7 +3,7 @@ import unittest
 import numpy
 
 from src.domain.pixel_reader_utils import PixelReader
-from src.domain.recognizer_module import RecognizerModule
+from src.domain.correlation_utils import CorrelationUtils
 
 
 def buildFileName(number):
@@ -39,7 +39,7 @@ class ConfusionMatrizTestCase(unittest.TestCase):
         input_file_name = buildFileName(input_number)
         pattern_pixels, width, height = PixelReader.read_as_list(pattern_file_name)
         target_pixels, width, height = PixelReader.read_as_list(input_file_name)
-        return RecognizerModule.calculate_correlation(pattern_pixels, target_pixels)
+        return CorrelationUtils.calculate_correlation(pattern_pixels, target_pixels)
 
 
 if __name__ == '__main__':

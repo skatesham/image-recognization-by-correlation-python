@@ -1,4 +1,4 @@
-from src.domain.pattern_builder import PatternBuilder
+from src.domain.builder.pattern_builder import PatternBuilder
 from src.domain.recognizer_service import RecognizerService
 
 

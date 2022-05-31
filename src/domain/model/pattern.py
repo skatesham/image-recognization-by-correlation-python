@@ -2,9 +2,9 @@ from operator import attrgetter
 
 
 class Pattern:
-    def __init__(self, name, pixels, height, width, success_marge=0.88) -> None:
+    def __init__(self, class_name, pixels, height, width, success_marge=0.88) -> None:
         super().__init__()
-        self.name = name
+        self.class_name = str(class_name)
         self.pixels = pixels
         self.height = height
         self.width = width
