@@ -2,7 +2,6 @@ import unittest
 
 from src.domain.pattern import Pattern
 from src.domain.pixel_reader import PixelReader
-from src.domain.process import Process
 from src.domain.recognizer_service import RecognizerService
 
 
@@ -18,18 +17,16 @@ class NumberRecognizerTestCase(unittest.TestCase):
         matriz, width, height = self.reader.read_as_matriz(filename)
         patterns = self.build_patterns()
         target_image = Pattern(filename, matriz, height, width)
-        process = Process(target_image, patterns)
-        process_result = self.recognizer.process_image(process)
-        self.assertEqual(number_pattern, process_result.answer)
+        process_result = self.recognizer.process_image(target_image, patterns)
+        self.assertEqual(number_pattern, process_result[0])
 
     def test_process_image_search_numbers(self):
         filename = 'img/all_numbers.png'
         matriz, width, height = self.reader.read_as_matriz(filename)
         patterns = self.build_patterns()
         target_image = Pattern(filename, matriz, height, width)
-        process = Process(target_image, patterns)
-        process_result = self.recognizer.process_image(process)
-        self.assertEqual("987654321", process_result.answer)
+        result, __ = self.recognizer.process_image(target_image, patterns)
+        self.assertEqual("987654321", result)
         expected_best_results = {
             0: '',
             1: 1.0,
@@ -42,7 +39,7 @@ class NumberRecognizerTestCase(unittest.TestCase):
             8: 0.97,
             9: 1.0
         }
-        self.assertEqual(expected_best_results, process_result.get_best_results())
+        self.assertEqual(expected_best_results, dict((x.name, x.get_best_result()) for x in patterns))
         expected_best_results = {
             0: [0.68, 0.7, 0.77, 0.83, 0.85],
             1: [0.34, 0.38, 0.4, 0.55, 1.0],
@@ -55,7 +52,7 @@ class NumberRecognizerTestCase(unittest.TestCase):
             8: [0.74, 0.78, 0.78, 0.87, 0.97],
             9: [0.73, 0.73, 0.76, 0.77, 1.0]
         }
-        self.assertEqual(expected_best_results, process_result.get_filtered_results())
+        self.assertEqual(expected_best_results, dict((x.name,x.get_filtered_results()) for x in patterns))
 
     def build_patterns(self, patterns_filename="../resources/img/numbers/{}.png"):
         patterns = list()

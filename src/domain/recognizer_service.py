@@ -1,3 +1,4 @@
+from src.domain.pixel_pointer import PixelPointer
 from src.domain.pixel_reader import PixelReader
 from src.domain.recognizer_module import RecognizerModule
 
@@ -9,36 +10,38 @@ class RecognizerService:
         self.recognizer_module = RecognizerModule()
         self.reader = PixelReader()
 
-    def process_image(self, process):
+    def process_image(self, target_image, patterns):
         ''' Process the following stages of image processing
         Segmentation / Representation / Classification '''
         # Segmentation Stage
-        while process.pointer.end_pointer_y <= process.target_pattern.height:
-            sample_result = self.__segmentation_stage_unitary(process)
-            process.answer += sample_result
-        return process
+        answer = ''
+        pointer = PixelPointer(target_image.height, target_image.width, patterns[0].height, patterns[0].width)
+        while pointer.end_pointer_y <= target_image.height:
+            sample_result = self.__segmentation_stage_unitary(target_image, patterns, pointer)
+            answer += sample_result
+        return answer, patterns
 
-    def __segmentation_stage_unitary(self, process):
+    def __segmentation_stage_unitary(self, target_image, patterns, pointer):
         ''' Extract segments (samples) of the target_image
         based on the pattern image '''
         sample = []
-        delta_y = process.pointer.init_pointer_y
-        while delta_y < process.pointer.end_pointer_y:
-            delta_x = process.pointer.init_pointer_x
-            while delta_x < process.pointer.end_pointer_x:
-                sample.append(process.target_pattern.pixels[delta_y][delta_x])
+        delta_y = pointer.init_pointer_y
+        while delta_y < pointer.end_pointer_y:
+            delta_x = pointer.init_pointer_x
+            while delta_x < pointer.end_pointer_x:
+                sample.append(target_image.pixels[delta_y][delta_x])
                 delta_x += 1
             delta_y += 1
         # Representation Stage
-        answer = self.__representation_stage(sample, process)
-        process.pointer.next(answer)
+        answer = self.__representation_stage(sample, patterns, pointer.init_pointer_y, pointer.init_pointer_x)
+        pointer.next(answer)
         return answer
 
-    def __representation_stage(self, target_sample, process):
+    def __representation_stage(self, target_sample, patterns, delta_x, delta_y):
         ''' Stage of process all patterns with the segment (sample) '''
         best_result = -2
         best_pattern = ''
-        for pattern in process.patterns:
+        for pattern in patterns:
             result = self.recognizer_module.represent(pattern.pixels, target_sample)
             pattern.results.append(result)
             if result > best_result:
@@ -48,8 +51,8 @@ class RecognizerService:
         # Classification Stage
         if self.__classify_pattern(best_result, best_pattern.success_marge):
             best_pattern.best_result = best_result
-            best_pattern.delta_y = process.pointer.init_pointer_y
-            best_pattern.delta_x = process.pointer.init_pointer_x
+            best_pattern.delta_y = delta_x
+            best_pattern.delta_x = delta_y
             return str(best_pattern.name)
 
         return str()
