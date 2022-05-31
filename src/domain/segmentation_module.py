@@ -1,5 +1,5 @@
-from src.domain.processing.segment import Segment
-from src.domain.processing.segmentation_pointer import SegmentationPointer
+from src.domain.model.segment import Segment
+from src.domain.model.segmentation_pointer import SegmentationPointer
 
 
 class SegmentationModule:

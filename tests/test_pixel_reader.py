@@ -2,7 +2,7 @@ import unittest
 
 import numpy
 
-from src.domain.processing.pixel_reader import PixelReaderUtils
+from src.domain.utils.pixel_reader import PixelReaderUtils
 
 
 class ImageReaderTestCase(unittest.TestCase):

@@ -2,7 +2,7 @@ import unittest
 
 import numpy
 
-from src.domain.processing.representation_module import RepresentationModule
+from src.domain.representation_module import RepresentationModule
 
 
 class RecognizerModuleCorrelationTestCase(unittest.TestCase):

@@ -1,6 +1,6 @@
 import unittest
 
-from src.domain.processing.segmentation_module import SegmentationModule
+from src.domain.segmentation_module import SegmentationModule
 from tests.pattern_templates import PatternTemplates
 
 

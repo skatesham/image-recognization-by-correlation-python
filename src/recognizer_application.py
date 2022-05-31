@@ -1,8 +1,8 @@
-from src.domain.processing.acquisition_module import AcquisitionModule
-from src.domain.recognizer_service import RecognizerService
+from src.domain.acquisition_module import AcquisitionModule
+from src.recognizer_service import RecognizerService
 
 
-class Recognizer:
+class RecognizerApplication:
 
     def __init__(self) -> None:
         super().__init__()

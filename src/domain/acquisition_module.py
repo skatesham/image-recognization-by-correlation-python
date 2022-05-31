@@ -1,4 +1,4 @@
-from src.domain.builder.pattern_builder import PatternBuilder
+from src.domain.model.pattern_builder import PatternBuilder
 
 
 class AcquisitionModule:

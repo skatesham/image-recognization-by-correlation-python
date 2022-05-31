@@ -1,7 +1,7 @@
-from src.domain.processing.acquisition_module import AcquisitionModule
-from src.domain.processing.classification_module import ClassificationModule
-from src.domain.processing.representation_module import RepresentationModule
-from src.domain.processing.segmentation_module import SegmentationModule
+from src.domain.acquisition_module import AcquisitionModule
+from src.domain.classification_module import ClassificationModule
+from src.domain.representation_module import RepresentationModule
+from src.domain.segmentation_module import SegmentationModule
 
 
 class RecognizerService:

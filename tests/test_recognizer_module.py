@@ -2,8 +2,8 @@ import unittest
 
 import numpy
 
-from src.domain.processing.pixel_reader import PixelReaderUtils
-from src.domain.processing.representation_module import RepresentationModule
+from src.domain.utils.pixel_reader import PixelReaderUtils
+from src.domain.representation_module import RepresentationModule
 
 
 class RecognizerModuleTestCase(unittest.TestCase):

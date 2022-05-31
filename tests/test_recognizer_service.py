@@ -1,8 +1,8 @@
 import unittest
 
 from src.domain.model.pattern import Pattern
-from src.domain.processing.pixel_reader import PixelReaderUtils
-from src.domain.recognizer_service import RecognizerService
+from src.domain.utils.pixel_reader import PixelReaderUtils
+from src.recognizer_service import RecognizerService
 
 
 class NumberRecognizerTestCase(unittest.TestCase):

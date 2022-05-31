@@ -1,5 +1,5 @@
 from src.domain.model.pattern import Pattern
-from src.domain.processing.pixel_reader import PixelReaderUtils
+from src.domain.utils.pixel_reader import PixelReaderUtils
 
 
 class PatternBuilder:

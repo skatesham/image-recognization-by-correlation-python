@@ -1,8 +1,8 @@
 import unittest
 
-from src.domain.processing.classification_module import ClassificationModule
-from src.domain.processing.representation_module import RepresentationModule
-from src.domain.processing.segmentation_module import SegmentationModule
+from src.domain.classification_module import ClassificationModule
+from src.domain.representation_module import RepresentationModule
+from src.domain.segmentation_module import SegmentationModule
 from tests.pattern_templates import PatternTemplates
 
 
