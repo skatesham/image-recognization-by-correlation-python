@@ -13,7 +13,7 @@ class RecognizerService:
         ''' Process the following stages of image processing
         Segmentation / Representation / Classification '''
         # Segmentation Stage
-        while process.pointer.end_pointer_y <= process.height:
+        while process.pointer.end_pointer_y <= process.target_pattern.height:
             sample_result = self.__segmentation_stage_unitary(process)
             process.answer += sample_result
         return process
@@ -26,7 +26,7 @@ class RecognizerService:
         while delta_y < process.pointer.end_pointer_y:
             delta_x = process.pointer.init_pointer_x
             while delta_x < process.pointer.end_pointer_x:
-                sample.append(process.pixels[delta_y][delta_x])
+                sample.append(process.target_pattern.pixels[delta_y][delta_x])
                 delta_x += 1
             delta_y += 1
         # Representation Stage

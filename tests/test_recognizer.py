@@ -2,6 +2,7 @@ import unittest
 
 from src.recognizer import Recognizer
 
+import json
 
 class RecognizerTestCase(unittest.TestCase):
 

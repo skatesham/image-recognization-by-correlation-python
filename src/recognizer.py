@@ -20,10 +20,11 @@ class Recognizer:
     def acquisition(self, target_filename, patterns_filename="../resources/img/numbers/{}.png"):
         ''' Stage of obtain image data for processing '''
         target_matriz_pixels, width, height = self.reader.read_as_matriz(target_filename)
+        target_image = Pattern(target_filename, target_matriz_pixels, height, width)
         patterns = list()
         for name in range(10):
-            pixels, width, height = self.reader.read_as_list(patterns_filename.format(name))
-            pattern = Pattern(name, pixels, height, width)
+            pixels, pattern_width, pattern_height = self.reader.read_as_list(patterns_filename.format(name))
+            pattern = Pattern(name, pixels, pattern_height, pattern_width)
             patterns.append(pattern)
-        return Process(pixels, width, height, patterns)
+        return Process(target_image, patterns)
 

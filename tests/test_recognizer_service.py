@@ -16,16 +16,18 @@ class NumberRecognizerTestCase(unittest.TestCase):
         number_pattern = "8"
         filename = f'../resources/img/numbers/{number_pattern}.png'
         matriz, width, height = self.reader.read_as_matriz(filename)
-        patterns = self.acquisition()
-        process = Process(matriz, width, height, patterns)
+        patterns = self.build_patterns()
+        target_image = Pattern(filename, matriz, height, width)
+        process = Process(target_image, patterns)
         process_result = self.recognizer.process_image(process)
         self.assertEqual(number_pattern, process_result.answer)
 
     def test_process_image_search_numbers(self):
         filename = 'img/all_numbers.png'
         matriz, width, height = self.reader.read_as_matriz(filename)
-        patterns = self.acquisition()
-        process = Process(matriz, width, height, patterns)
+        patterns = self.build_patterns()
+        target_image = Pattern(filename, matriz, height, width)
+        process = Process(target_image, patterns)
         process_result = self.recognizer.process_image(process)
         self.assertEqual("987654321", process_result.answer)
         expected_best_results = {
@@ -55,7 +57,7 @@ class NumberRecognizerTestCase(unittest.TestCase):
         }
         self.assertEqual(expected_best_results, process_result.get_filtered_results())
 
-    def acquisition(self, patterns_filename="../resources/img/numbers/{}.png"):
+    def build_patterns(self, patterns_filename="../resources/img/numbers/{}.png"):
         patterns = list()
         for name in range(10):
             pixels, width, height = self.reader.read_as_list(patterns_filename.format(name))

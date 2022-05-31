@@ -1,13 +1,13 @@
+import json
+
 from src.domain.pixel_pointer import PixelPointer
 
 
 class Process:
-    def __init__(self, pixels, width, height, patterns) -> None:
+    def __init__(self, target_image, patterns) -> None:
         super().__init__()
 
-        self.pixels = pixels
-        self.width = width
-        self.height = height
+        self.target_pattern = target_image
         self.patterns = patterns
 
         # this approach only allow same width pattern,
@@ -16,7 +16,7 @@ class Process:
         self.pattern_height = patterns[0].height
 
         self.answer = str()
-        self.pointer = PixelPointer(height, width, self.pattern_height, self.pattern_width)
+        self.pointer = PixelPointer(target_image.height, target_image.width, self.pattern_height, self.pattern_width)
 
     def get_results(self):
         return dict((pattern.name, pattern.get_results()) for pattern in self.patterns)
@@ -26,3 +26,6 @@ class Process:
 
     def get_best_results(self):
         return dict((pattern.name, pattern.best_result) for pattern in self.patterns)
+
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
