@@ -1,9 +1,6 @@
 from src.domain.processing.classification_module import ClassificationModule
 from src.domain.processing.representation_module import RepresentationModule
 from src.domain.processing.segmentation_module import SegmentationModule
-from src.domain.processing.segmentation_pointer import SegmentationPointer
-from src.domain.correlation_utils import CorrelationUtils
-from src.domain.model.result import Result
 
 
 class RecognizerService:
@@ -17,52 +14,8 @@ class RecognizerService:
     def process_image(self, target_image, patterns):
         ''' Process the following stages of image processing
         Segmentation / Representation / Classification '''
-        # Segmentation Stage
-        pointer = SegmentationPointer(target_image.height, target_image.width, patterns[0].height, patterns[0].width)
-        target_segments = self.segmentation_module.extract_segments(target_image, pointer)
-
-        answer = ''
-        while pointer.end_pointer_y <= target_image.height:
-            sample_result = self.__segmentation_stage_unitary(target_image, patterns, pointer)
-            answer += sample_result
+        first_pattern = patterns[0]
+        target_segments = SegmentationModule.extract_segments(target_image, first_pattern)
+        results = RepresentationModule.represent_results(target_segments, patterns)
+        answer = ClassificationModule.classify_results(results, patterns)
         return answer
-
-    def __segmentation_stage_unitary(self, target_image, patterns, pointer):
-        ''' Extract segments (samples) of the target_image_pattern
-        based on the pattern image '''
-        sample = []
-        delta_y = pointer.init_pointer_y
-        while delta_y < pointer.end_pointer_y:
-            delta_x = pointer.init_pointer_x
-            while delta_x < pointer.end_pointer_x:
-                sample.append(target_image.pixels[delta_y][delta_x])
-                delta_x += 1
-            delta_y += 1
-        # Representation Stage
-        answer = self.__representation_stage(sample, patterns, pointer.init_pointer_y, pointer.init_pointer_x)
-        pointer.next(answer)
-        return answer
-
-    def __representation_stage(self, target_sample, patterns, delta_x, delta_y):
-        ''' Stage of process all patterns with the segment (sample) '''
-        best_result = Result(-2, 0, 0)
-        best_pattern = {}
-        for pattern in patterns:
-            result_value = CorrelationUtils.calculate_correlation(pattern.pixels, target_sample)
-            result = Result(result_value, delta_x, delta_y)
-            pattern.results.append(result)
-            if result_value > best_result.value:
-                best_result = result
-                best_pattern = pattern
-
-        # Classification Stage
-        if self.__classify_pattern(best_result, best_pattern.success_marge):
-            best_pattern.best_result = best_result
-            return str(best_pattern.name)
-
-        return str()
-
-    def __classify_pattern(self, result, success_marge):
-        ''' Stage of filter the positive results '''
-        return result.value > success_marge
-

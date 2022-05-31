@@ -5,6 +5,10 @@ from src.domain.pixel_reader_utils import PixelReader
 class PatternTemplates:
 
     @staticmethod
+    def build_patterns(patterns_filename="../resources/img/numbers/{}.png"):
+        return [PatternTemplates.build_pattern_number(i, patterns_filename) for i in range(10)]
+
+    @staticmethod
     def build_pattern_0(patterns_filename="../resources/img/numbers/{}.png"):
         return PatternTemplates.build_pattern_number(0, patterns_filename)
 

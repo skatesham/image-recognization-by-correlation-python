@@ -1,10 +1,12 @@
 from src.domain.processing.segment import Segment
+from src.domain.processing.segmentation_pointer import SegmentationPointer
 
 
 class SegmentationModule:
 
     @staticmethod
-    def extract_segments(target_image, pointer):
+    def extract_segments(target_image, pattern):
+        pointer = SegmentationPointer(target_image.height, target_image.width, pattern.height, pattern.width)
         segments = []
         while pointer.end_pointer_y <= target_image.height:
             segment = SegmentationModule.__extract_segment(target_image, pointer)
@@ -23,7 +25,6 @@ class SegmentationModule:
                 pixels.append(target_image.pixels[delta_y][delta_x])
                 delta_x += 1
             delta_y += 1
-        # Representation Stage
         segment = Segment(pixels, pointer.init_pointer_x, pointer.init_pointer_y)
         SegmentationModule.init_on_next_pixel(pointer)
         return segment
