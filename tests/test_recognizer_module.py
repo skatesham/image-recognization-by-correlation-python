@@ -2,8 +2,8 @@ import unittest
 
 import numpy
 
-from src.domain.pixel_reader_utils import PixelReader
-from src.domain.correlation_utils import CorrelationUtils
+from src.domain.processing.pixel_reader import PixelReaderUtils
+from src.domain.processing.representation_module import RepresentationModule
 
 
 class RecognizerModuleTestCase(unittest.TestCase):
@@ -12,21 +12,21 @@ class RecognizerModuleTestCase(unittest.TestCase):
         self.pixels = numpy.arange(1, 10).tolist()
 
     def test_image_correlation_half(self):
-        pattern_pixels, __, __ = PixelReader.read_as_list("img/blank.png")
-        target_pixels, __, __ = PixelReader.read_as_list("img/half.png")
-        result = CorrelationUtils.calculate_correlation(pattern_pixels, target_pixels)
+        pattern_pixels, __, __ = PixelReaderUtils.read_as_list("img/blank.png")
+        target_pixels, __, __ = PixelReaderUtils.read_as_list("img/half.png")
+        result = RepresentationModule.calculate_correlation(pattern_pixels, target_pixels)
         numpy.testing.assert_equal(float('NAN'), result)
 
     def test_image_inverted_correlation(self):
-        pattern_pixels, __, __ = PixelReader.read_as_list("img/chess.png")
-        target_pixels, __, __ = PixelReader.read_as_list("img/chess-inverse.png")
-        result = CorrelationUtils.calculate_correlation(pattern_pixels, target_pixels)
+        pattern_pixels, __, __ = PixelReaderUtils.read_as_list("img/chess.png")
+        target_pixels, __, __ = PixelReaderUtils.read_as_list("img/chess-inverse.png")
+        result = RepresentationModule.calculate_correlation(pattern_pixels, target_pixels)
         numpy.testing.assert_equal(-1.0, result)
 
     def test_inversion_inline_image_correlation(self):
-        pattern_pixels, __, __ = PixelReader.read_as_list("img/chess-inline.png")
-        target_pixels, __, __ = PixelReader.read_as_list("img/chess-inline-inverse.png")
-        result = CorrelationUtils.calculate_correlation(pattern_pixels, target_pixels)
+        pattern_pixels, __, __ = PixelReaderUtils.read_as_list("img/chess-inline.png")
+        target_pixels, __, __ = PixelReaderUtils.read_as_list("img/chess-inline-inverse.png")
+        result = RepresentationModule.calculate_correlation(pattern_pixels, target_pixels)
         numpy.testing.assert_equal(-1.0, result)
 
 

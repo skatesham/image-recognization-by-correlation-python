@@ -12,7 +12,6 @@ class RepresentationModuleTestCase(unittest.TestCase):
         pass
 
     def test_extract_segments(self):
-        success_marge = 0.88
         patterns = PatternTemplates.build_patterns()
         target_image = PatternTemplates.build_target_all_numbers()
         target_segments = SegmentationModule.extract_segments(target_image, patterns[0])

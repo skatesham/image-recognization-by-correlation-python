@@ -2,7 +2,7 @@ import numpy
 from PIL import Image
 
 
-class PixelReader:
+class PixelReaderUtils:
 
     @staticmethod
     def read_as_matriz(filename):

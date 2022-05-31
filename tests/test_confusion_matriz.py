@@ -2,8 +2,8 @@ import unittest
 
 import numpy
 
-from src.domain.pixel_reader_utils import PixelReader
-from src.domain.correlation_utils import CorrelationUtils
+from src.domain.processing.pixel_reader import PixelReaderUtils
+from src.domain.processing.representation_module import RepresentationModule
 
 
 def buildFileName(number):
@@ -37,9 +37,9 @@ class ConfusionMatrizTestCase(unittest.TestCase):
     def correlate(pattern_number, input_number):
         pattern_file_name = buildFileName(pattern_number)
         input_file_name = buildFileName(input_number)
-        pattern_pixels, width, height = PixelReader.read_as_list(pattern_file_name)
-        target_pixels, width, height = PixelReader.read_as_list(input_file_name)
-        return CorrelationUtils.calculate_correlation(pattern_pixels, target_pixels)
+        pattern_pixels, width, height = PixelReaderUtils.read_as_list(pattern_file_name)
+        target_pixels, width, height = PixelReaderUtils.read_as_list(input_file_name)
+        return RepresentationModule.calculate_correlation(pattern_pixels, target_pixels)
 
 
 if __name__ == '__main__':
