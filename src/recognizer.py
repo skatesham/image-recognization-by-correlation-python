@@ -1,3 +1,4 @@
+from src.domain.pattern_builder import PatternBuilder
 from src.domain.pattern import Pattern
 from src.domain.pixel_reader import PixelReader
 from src.domain.recognizer_service import RecognizerService
@@ -12,12 +13,10 @@ class Recognizer:
 
     def recognize_patterns(self, target_filename, patterns_filename="../resources/img/numbers/{}.png"):
         # Data acquisition Stage
-        target_matriz_pixels, width, height = self.reader.read_as_matriz(target_filename)
-        target_image = Pattern(target_filename, target_matriz_pixels, height, width)
+        target_image = PatternBuilder.build_target(target_filename)
         patterns = list()
         for name in range(10):
-            pixels, pattern_width, pattern_height = self.reader.read_as_list(patterns_filename.format(name))
-            pattern = Pattern(name, pixels, pattern_height, pattern_width)
+            pattern = PatternBuilder.build_pattern(name, patterns_filename)
             patterns.append(pattern)
         # Throw stages of Segmentation / Representation / Classification
         return self.recognizer.process_image(target_image, patterns)
