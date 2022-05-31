@@ -12,8 +12,8 @@ class RepresentationModule:
         for segment in target_segments:
             for pattern in patterns:
                 pattern_results = results[pattern]
-                result_value = CorrelationUtils.calculate_correlation(pattern.pixels, segment.pixels)
-                result = Result(result_value, segment.delta_x, segment.delta_y, pattern.class_name)
+                value = CorrelationUtils.calculate_correlation(pattern.pixels, segment.pixels)
+                result = Result(value, segment.delta_x, segment.delta_y, pattern.class_name, pattern.success_marge)
                 pattern_results.append(result)
         for key in results:
             results[key].sort(key=attrgetter('value'), reverse=True)
