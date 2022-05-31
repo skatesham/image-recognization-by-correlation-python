@@ -1,5 +1,4 @@
 from src.domain.pattern_builder import PatternBuilder
-from src.domain.pattern import Pattern
 from src.domain.pixel_reader import PixelReader
 from src.domain.recognizer_service import RecognizerService
 

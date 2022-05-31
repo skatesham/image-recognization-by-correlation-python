@@ -9,21 +9,19 @@ class Pattern:
         self.height = height
         self.width = width
         self.success_marge = success_marge
-        self.best_result = ''
-        self.delta_y = -1
-        self.delta_x = -1
+
+        # TODO
+        self.filename = ""
 
         self.results = list()
-        self.filtered_results = list()
+        self.best_result = {}
 
-        self.delta_results = dict()
+    def get_best_result(self):
+        return self.best_result
 
     def get_results(self):
         return self.results
 
-    def get_filtered_results(self, size_best_results=5):
-        self.results.sort(key=attrgetter('value'))
+    def find_filtered_results(self, size_best_results=5):
+        self.results.sort(key=attrgetter('value'), reverse=True)
         return self.results[-size_best_results:]
-
-    def get_best_result(self):
-        return self.best_result
