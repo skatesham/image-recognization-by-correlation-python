@@ -1,5 +1,4 @@
 from src.domain.pixel_pointer import PixelPointer
-from src.domain.pixel_reader import PixelReader
 from src.domain.recognizer_module import RecognizerModule
 from src.domain.result import Result
 
@@ -8,8 +7,6 @@ class RecognizerService:
 
     def __init__(self) -> None:
         super().__init__()
-        self.recognizer_module = RecognizerModule()
-        self.reader = PixelReader()
 
     def process_image(self, target_image, patterns):
         ''' Process the following stages of image processing
@@ -43,7 +40,7 @@ class RecognizerService:
         best_result = Result(-2, 0, 0)
         best_pattern = {}
         for pattern in patterns:
-            result_value = self.recognizer_module.represent(pattern.pixels, target_sample)
+            result_value = RecognizerModule.calculate_correlation(pattern.pixels, target_sample)
             result = Result(result_value, delta_x, delta_y)
             pattern.results.append(result)
             if result_value > best_result.value:

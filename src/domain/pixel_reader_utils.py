@@ -4,7 +4,8 @@ from PIL import Image
 
 class PixelReader:
 
-    def read_as_matriz(self, filename):
+    @staticmethod
+    def read_as_matriz(filename):
         img = Image.open(filename)
         width, height = img.size
         image_array = numpy.asarray(img)
@@ -16,7 +17,8 @@ class PixelReader:
             pixels.append(line)
         return pixels, width, height
 
-    def read_as_list(self, filename):
+    @staticmethod
+    def read_as_list(filename):
         img = Image.open(filename)
         width, height = img.size
         image_array = numpy.asarray(img)

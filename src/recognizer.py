@@ -1,5 +1,4 @@
 from src.domain.pattern_builder import PatternBuilder
-from src.domain.pixel_reader import PixelReader
 from src.domain.recognizer_service import RecognizerService
 
 
@@ -8,7 +7,6 @@ class Recognizer:
     def __init__(self) -> None:
         super().__init__()
         self.recognizer = RecognizerService()
-        self.reader = PixelReader()
 
     def recognize(self, target_filename, patterns_filename="../resources/img/numbers/{}.png"):
         # Data acquisition Stage

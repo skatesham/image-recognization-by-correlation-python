@@ -2,7 +2,7 @@ import unittest
 
 import numpy
 
-from src.domain.pixel_reader import PixelReader
+from src.domain.pixel_reader_utils import PixelReader
 from src.domain.recognizer_module import RecognizerModule
 
 
@@ -12,16 +12,12 @@ def buildFileName(number):
 
 class ConfusionMatrizTestCase(unittest.TestCase):
 
-    def setUp(self):
-        self.recognizer_module = RecognizerModule()
-        self.reader = PixelReader()
-
     def test_all_numbers_correlation(self):
         results = []
         for y in range(10):
             result_x = []
             for x in range(10):
-                result = self.correlate(y, x)
+                result = ConfusionMatrizTestCase.correlate(y, x)
                 result_x.append(result)
             results.append(result_x)
         # Debug on this variable for get confusion matriz
@@ -37,12 +33,13 @@ class ConfusionMatrizTestCase(unittest.TestCase):
                           [0.78, 0.22, 0.59, 0.85, 0.46, 0.78, 0.87, 0.4, 1.0, 0.78],
                           [0.85, 0.17, 0.64, 0.76, 0.36, 0.73, 0.77, 0.38, 0.78, 1.0]], results)
 
-    def correlate(self, pattern_number, input_number):
+    @staticmethod
+    def correlate(pattern_number, input_number):
         pattern_file_name = buildFileName(pattern_number)
         input_file_name = buildFileName(input_number)
-        pattern_pixels, width, height = self.reader.read_as_list(pattern_file_name)
-        target_pixels, width, height = self.reader.read_as_list(input_file_name)
-        return self.recognizer_module.represent(pattern_pixels, target_pixels)
+        pattern_pixels, width, height = PixelReader.read_as_list(pattern_file_name)
+        target_pixels, width, height = PixelReader.read_as_list(input_file_name)
+        return RecognizerModule.calculate_correlation(pattern_pixels, target_pixels)
 
 
 if __name__ == '__main__':

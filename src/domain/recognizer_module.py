@@ -5,7 +5,8 @@ FORMAT_RESULT = "{:.2f}"
 
 class RecognizerModule:
 
-    def represent(self, pattern_pixels, target_pixels):
+    @staticmethod
+    def calculate_correlation(pattern_pixels, target_pixels):
         ''' Calculate with correlation / coeficient of Pearson '''
         result = numpy.corrcoef(target_pixels, pattern_pixels).tolist()
         # Using just single result of correlation
