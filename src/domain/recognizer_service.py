@@ -1,6 +1,7 @@
 from src.domain.pixel_pointer import PixelPointer
 from src.domain.pixel_reader import PixelReader
 from src.domain.recognizer_module import RecognizerModule
+from src.domain.result import Result
 
 
 class RecognizerService:
@@ -39,25 +40,24 @@ class RecognizerService:
 
     def __representation_stage(self, target_sample, patterns, delta_x, delta_y):
         ''' Stage of process all patterns with the segment (sample) '''
-        best_result = -2
-        best_pattern = ''
+        best_result = Result(-2, 0, 0)
+        best_pattern = {}
         for pattern in patterns:
-            result = self.recognizer_module.represent(pattern.pixels, target_sample)
+            result_value = self.recognizer_module.represent(pattern.pixels, target_sample)
+            result = Result(result_value, delta_x, delta_y)
             pattern.results.append(result)
-            if result > best_result:
+            if result_value > best_result.value:
                 best_result = result
                 best_pattern = pattern
 
         # Classification Stage
         if self.__classify_pattern(best_result, best_pattern.success_marge):
             best_pattern.best_result = best_result
-            best_pattern.delta_y = delta_x
-            best_pattern.delta_x = delta_y
             return str(best_pattern.name)
 
         return str()
 
     def __classify_pattern(self, result, success_marge):
         ''' Stage of filter the positive results '''
-        return result > success_marge
+        return result.value > success_marge
 

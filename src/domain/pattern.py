@@ -1,3 +1,6 @@
+from operator import attrgetter
+
+
 class Pattern:
     def __init__(self, name, pixels, height, width, success_marge=0.88) -> None:
         super().__init__()
@@ -19,7 +22,7 @@ class Pattern:
         return self.results
 
     def get_filtered_results(self, size_best_results=5):
-        self.results.sort()
+        self.results.sort(key=attrgetter('value'))
         return self.results[-size_best_results:]
 
     def get_best_result(self):

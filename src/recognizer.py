@@ -11,13 +11,7 @@ class Recognizer:
         self.reader = PixelReader()
 
     def recognize_patterns(self, target_filename, patterns_filename="../resources/img/numbers/{}.png"):
-        # Acquisition Stage
-        target_image, patterns = self.acquisition(target_filename, patterns_filename)
-        # Segmentation / Representation / Classification Stage
-        return self.recognizer.process_image(target_image, patterns)
-
-    def acquisition(self, target_filename, patterns_filename="../resources/img/numbers/{}.png"):
-        ''' Stage of obtain image data for processing '''
+        # Data acquisition Stage
         target_matriz_pixels, width, height = self.reader.read_as_matriz(target_filename)
         target_image = Pattern(target_filename, target_matriz_pixels, height, width)
         patterns = list()
@@ -25,4 +19,6 @@ class Recognizer:
             pixels, pattern_width, pattern_height = self.reader.read_as_list(patterns_filename.format(name))
             pattern = Pattern(name, pixels, pattern_height, pattern_width)
             patterns.append(pattern)
-        return target_image, patterns
+        # Throw stages of Segmentation / Representation / Classification
+        return self.recognizer.process_image(target_image, patterns)
+
