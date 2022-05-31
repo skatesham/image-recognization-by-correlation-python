@@ -3,7 +3,7 @@ import numpy
 FORMAT_RESULT = "{:.2f}"
 
 
-class RecognizerModule:
+class CorrelationUtils:
 
     @staticmethod
     def calculate_correlation(pattern_pixels, target_pixels):

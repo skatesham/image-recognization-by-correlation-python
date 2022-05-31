@@ -1,4 +1,4 @@
-from src.domain.pattern import Pattern
+from src.domain.model.pattern import Pattern
 from src.domain.pixel_reader_utils import PixelReader
 
 

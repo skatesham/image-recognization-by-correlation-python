@@ -1,19 +1,27 @@
-from src.domain.pixel_pointer import PixelPointer
-from src.domain.recognizer_module import RecognizerModule
-from src.domain.result import Result
+from src.domain.processing.classification_module import ClassificationModule
+from src.domain.processing.representation_module import RepresentationModule
+from src.domain.processing.segmentation_module import SegmentationModule
+from src.domain.processing.segmentation_pointer import SegmentationPointer
+from src.domain.correlation_utils import CorrelationUtils
+from src.domain.model.result import Result
 
 
 class RecognizerService:
 
     def __init__(self) -> None:
         super().__init__()
+        self.segmentation_module = SegmentationModule()
+        self.representation_module = RepresentationModule()
+        self.classification_module = ClassificationModule()
 
     def process_image(self, target_image, patterns):
         ''' Process the following stages of image processing
         Segmentation / Representation / Classification '''
         # Segmentation Stage
+        pointer = SegmentationPointer(target_image.height, target_image.width, patterns[0].height, patterns[0].width)
+        target_segments = self.segmentation_module.extract_segments(target_image, pointer)
+
         answer = ''
-        pointer = PixelPointer(target_image.height, target_image.width, patterns[0].height, patterns[0].width)
         while pointer.end_pointer_y <= target_image.height:
             sample_result = self.__segmentation_stage_unitary(target_image, patterns, pointer)
             answer += sample_result
@@ -40,7 +48,7 @@ class RecognizerService:
         best_result = Result(-2, 0, 0)
         best_pattern = {}
         for pattern in patterns:
-            result_value = RecognizerModule.calculate_correlation(pattern.pixels, target_sample)
+            result_value = CorrelationUtils.calculate_correlation(pattern.pixels, target_sample)
             result = Result(result_value, delta_x, delta_y)
             pattern.results.append(result)
             if result_value > best_result.value:
