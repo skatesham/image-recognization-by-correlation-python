@@ -27,13 +27,14 @@ $ recimg tests/img/all_numbers.png resources/img/numbers/ .png
 ```
 
 #### Steps:
-- Terminal inside "local virtual env" (venv)
+- Open a terminal inside the virtual environment (venv)
 - For install python required libs on env, run:
 ```commandline
-(env)$: pip install -r requirementtxt
+(env)$: pip install -r requirement.txt
 ```
 
-### Experiment
+### Correlation Number Recognition Experiment
+Recognize class pattern numbers in a image with samples of patterns.
 
 __Example target image:__    
 ![alt-text][3]
