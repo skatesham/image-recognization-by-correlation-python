@@ -1,1 +1,9 @@
+### Clean repository .gitignore
+# By Sham Vinicius Fiorin
+
+# PyCharm
 .idea
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
