@@ -15,6 +15,17 @@
 - Python 3.6+
 - PyCharm (recommended)
 
+### Running as command line
+Open a terminal in the context of this repository, inside the virtual env, run the following command:
+```commandline
+(venv)$ python3 main.py tests/img/all_numbers.png resources/img/numbers/ .png
+```
+You can also, export alias as `alias recimg="python3 /home/user/dev/py-rec-img/main.py"`, and the use would be: 
+(must be installed globally the requirements or use inside virtual env)
+```commandline
+$ recimg tests/img/all_numbers.png resources/img/numbers/ .png
+```
+
 #### Steps:
 - Terminal inside "local virtual env" (venv)
 - For install python required libs on env, run:

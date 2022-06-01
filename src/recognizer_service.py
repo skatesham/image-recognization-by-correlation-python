@@ -12,8 +12,7 @@ class RecognizerService:
         target_segments = SegmentationModule.extract_segments(target_image, patterns[0])
         results = RepresentationModule.represent_results(target_segments, patterns)
         answer = ClassificationModule.classify_results(results, patterns)
-
-        return answer, patterns
+        return answer
 
     @staticmethod
     def process_image_without_acquisition(target_image, patterns):

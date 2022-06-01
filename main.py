@@ -1,16 +1,20 @@
-# This is a target_sample Python script.
+import sys
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from src.recognizer_application import RecognizerApplication
 
+if __name__ == "__main__":
+    print(f"Arguments must be 3, actual count: {len(sys.argv) - 1} ")
+    print("Arg(1): target image path")
+    print("Arg(2): folder patterns")
+    print("Arg(3): pattern format as .png")
+    app = RecognizerApplication()
+    target_filename_arg = None
+    patterns_filename_arg = None
+    if len(sys.argv) > 2:
+        target_filename_arg = sys.argv[1]
+    if len(sys.argv) > 3:
+        patterns_filename_arg = sys.argv[2] + "{}" + sys.argv[3]
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    if patterns_filename_arg is not None:
+        answer = app.recognize(target_filename_arg, patterns_filename_arg)
+        print(f"Result= {answer}")
